@@ -104,10 +104,9 @@
         </div>
       <div class="flex h-screen antialiased justify-center align-center text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
 
-    <!-- component -->
 <section class="antialiased bg-gray-100 text-gray-600 h-screen flex justify-center align-center px-4">
     <div class="flex flex-col justify-center h-full">
-        <!-- Table -->
+    
         <div class="w-full max-w-2xl justify-center bg-white shadow-lg rounded-sm border border-gray-200">
             <header class="px-5 py-4 border-b border-gray-100">
                 <h2 class="font-semibold text-gray-800">Customers</h2>
