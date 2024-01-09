@@ -12,46 +12,68 @@ class Wiki
     private $iduser;
     private $categoryID;
 
+    
     // construct//
     public function __construct()
     {
         $this->conn = Database::getDb()->getConn();
     }
-    //getters//
-    public function getid()
-    {
-        return $this->wikiID;
-    }
-    public function gettitle()
-    {
-        return $this->title;
-    }
-    public function getcontent()
-    {
-        return $this->content;
-    }
-    public function creationDate()
-    {
-        return $this->title;
-    }
-    public function iduser()
-    {
-        return $this->iduser;
-    }
+// getters//
+public function getid()
+{
+    return $this->wikiID;
+}
+public function gettitle()
+{
+    return $this->title;
+}
+public function getcontent()
+{
+    return $this->content;
+}
+public function creationDate()
+{
+    return $this->title;
+}
+public function iduser()
+{
+    return $this->iduser;
+}
 
-    //setters//
-    public function settitle($title)
-    {
-        $this->title = $title;
-    }
-    public function setcontent($content)
-    {
-        $this->content = $content;
-    }
-    public function setcreationdate($creationDate)
-    {
-        $this->creationDate = $creationDate;
-    }
+//setters//
+public function setwikiId($wikiID)
+{
+    $this->wikiID = $wikiID;
+}
+public function settitle($title)
+{
+    $this->title = $title;
+}
+public function setcontent($content)
+{
+    $this->content = $content;
+}
+public function setcreationdate($creationDate)
+{
+    $this->creationDate = $creationDate;
+}
+
+
+
+
+    
+
+    // set magic
+    // public function __set($parametre, $value)
+    // {
+    //     $this->$parametre = $value;
+
+    // }
+    // // get magic
+    // public function __get($parametre)
+    // {
+    //    return  $this->$parametre;
+    // }
 
     public function addwiki()
     {
@@ -67,11 +89,49 @@ class Wiki
     }
     public function getwiki()
     {
-        $query = "SELECT wiki.title, wiki.content, wiki.creationDate,  CONCAT(user.prenom, ' ', user.nom) as fullname  
+        $query = "SELECT wiki.title, wiki.content, wiki.creationDate, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname  
         FROM wiki
-       JOIN user ON wiki.iduser = user.iduser";
+        JOIN user ON wiki.iduser = user.iduser
+        ORDER BY wiki.creationDate DESC
+        LIMIT 2";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-}
+    public function getallwiki()
+    {
+        $query = "SELECT wiki.title, wiki.content, wiki.creationDate,categorie.nomCategorie, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname 
+        FROM wiki
+        JOIN user ON wiki.iduser = user.iduser
+        JOIN categorie ON wiki.categorieID = categorie.categorieID";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $w = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $wikis = [];
+        foreach ($w as $wi) {
+            $wiki = new Wiki();
+            $wiki->setwikiId($wi['wikiID']);
+            $wiki->setcontent($wi['content']);
+            $wiki->setcreationdate($wi['creationdate']);
+            $wiki->settitle($wi['title']);
+            
+            $wikis[] = $wiki;
+        }
+        return $wikis;
+    }
+       
+
+
+
+
+    public function deletewiki(){
+        $query = "DELETE FROM `wiki` WHERE wikiID = :wikiID";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":wikiID", $this->wikiID);
+        $stmt->execute();
+    }
+    }
+
+   
+    
