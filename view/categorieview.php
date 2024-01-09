@@ -231,8 +231,8 @@ $cat->deleteCategorie();
         <h2 class="text-2xl font-semibold mb-4">Add New Category</h2>
         <form action="" method="post">
             <label for="newCategory" class="block mb-2 text-sm font-medium text-gray-900">Category Name</label>
-            <input type="text" name="newCategory" id="newCategory" class="w-full border border-gray-300 p-2.5 rounded-md mb-4" placeholder="Type category name" required="">
-            <button type="submit" name="addNewCategory" class="bg-blue-500 text-white rounded-md p-2.5 hover:bg-blue-700">Add Category</button>
+            <input type="text" name="nomCategorie" id="newCategory" class="w-full border border-gray-300 p-2.5 rounded-md mb-4" placeholder="Type category name" required="">
+            <button type="submit" name="addcat" class="bg-blue-500 text-white rounded-md p-2.5 hover:bg-blue-700">Add Category</button>
         </form>
         <button onclick="closeAddCategoryModal()" class="bg-gray-300 text-gray-700 rounded-md p-2.5 ml-2 hover:bg-gray-400">Cancel</button>
     </div>
