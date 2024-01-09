@@ -18,7 +18,6 @@ class wikicontroller
 
         $wikimodel = new Wiki();
         return $wikimodel->getallwiki();
-        
     }
     public function deletewiki()
     {

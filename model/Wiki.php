@@ -74,18 +74,30 @@ public function setcreationdate($creationDate)
     // {
     //    return  $this->$parametre;
     // }
-
-    public function addwiki()
+    public function addWikiTag($wikiID, $tagID)
     {
-        $query = "INSERT INTO `wiki`(`title`, `content`, `creationDate`, `iduser`, `categorieID`) VALUES ( `:title`, `:content`, `:creationDate`, `:iduser`, `:categorieID)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":title", $this->title);
-        $stmt->bindParam(":content", $this->content);
-        $stmt->bindParam(":creationDate", $this->creationDate);
-        $stmt->bindParam(":iduser", $this->iduser);
-        $stmt->bindParam(":categorieID", $this->categoryID);
+        $sql = "INSERT INTO wikitag (wikiID, tagID) VALUES (:wikiID, :tagID)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':wikiID', $wikiID);
+        $stmt->bindParam(':tagID', $tagID);
+        return $stmt->execute();
+    }
 
-        $stmt->execute();
+    public function addWiki($iduser, $categorieID)
+    {
+        $sql = "INSERT INTO wiki (title, content, creationDate, iduser, categorieID) VALUES (:title, :content, :creationDate, :iduser, :categorieID)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':content', $this->content);
+        $stmt->bindParam(':creationDate', $this->creationDate);
+        $stmt->bindParam(':iduser', $iduser);
+        $stmt->bindParam(':categorieID', $categorieID);
+    
+        $result = $stmt->execute();
+    
+        $wikiID = $this->conn->lastInsertId();
+    
+        return $result ? $wikiID : false;
     }
     public function getwiki()
     {
