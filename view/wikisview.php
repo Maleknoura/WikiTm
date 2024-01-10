@@ -1,10 +1,12 @@
 <?php
 require_once "../controller/wikicontroller.php";
+require_once "../controller/CategorieController.php";
 
 
 $controller = new wikicontroller();
 $wikis = $controller->getallwiki();
 $controller->deletewiki();
+
 
 
 
@@ -63,8 +65,8 @@ $controller->deletewiki();
 <section class="text-gray-600 w-4/5 ml-16 body-font overflow-hidden">
 <button id="openModal" class="ml-4 px-6 py-2 mt-5 bg-gray-300 text-white rounded-md hover:bg-blue-300 transition duration-300">+ New Wiki</button>
 <?php
-var_dump($wikis);
-        foreach ($wikis as $wiki) {
+
+        foreach ($wikis as $w) {
 
 
         ?>
@@ -75,12 +77,12 @@ var_dump($wikis);
       <div class="flex flex-wrap md:flex-nowrap">
     
         <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-          <span class="font-semibold title-font text-gray-700"><?php  $wiki->getcontent();?></span>
-          <span class="mt-1 text-gray-500 text-sm"><?php echo $wiki['creationDate']; ?></span>
+          <span class="font-semibold title-font text-gray-700"></span>
+          <span class="mt-1 text-gray-500 text-sm"><?php echo $w->getcreationDate(); ?></span>
         </div>
         <div class="md:flex-grow">
-          <h2 class="text-2xl font-medium text-gray-500 title-font mb-2"><?php echo $wiki['title']; ?></h2>
-          <p class="text-black "> <?php echo  substr($wiki['content'], 0, 350);  ?>...<a href="#" class="text-blue-300">View more</a></p>
+          <h2 class="text-2xl font-medium text-gray-500 title-font mb-2">   </h2>
+          <p class="text-black "><?php echo substr($w->getcontent(),0,350); ?>...<a href="#" class="text-blue-300">View more</a></p>
          
         </div>
         <span class="text-gray-500 cursor-pointer mr-4" title="Edit" onclick="openEditModal()">

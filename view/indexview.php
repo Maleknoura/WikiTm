@@ -75,19 +75,19 @@ $wikis = $controller->Wiki;
         <div class="container  mt-14">
             <div class="flex justify-center items-center  ">
                 <div class="md:w-1/2  ">
-                    <h2 class="text-5xl text-blue-300   mb-3">All You Need is read </h2>
-                    <p class="mt-12  " style="font-family:'Rubik'"> Nous nous engageons à fournir un espace où les passionnés de tous horizons peuvent partager leur expertise, collaborer à la création de contenus informatifs et participer à une communauté dynamique axée sur l'échange de connaissances. Notre objectif est de rendre l'apprentissage accessible, stimulant et inspirant pour tous.</p>
+                    <h2 class="text-5xl text-blue-300 ml-9  mb-3">All You Need is read </h2>
+                    <p class="mt-12 ml-9 " style="font-family:'Rubik'"> Nous nous engageons à fournir un espace où les passionnés de tous horizons peuvent partager leur expertise, collaborer à la création de contenus informatifs et participer à une communauté dynamique axée sur l'échange de connaissances. Notre objectif est de rendre l'apprentissage accessible, stimulant et inspirant pour tous.</p>
                    
                 </div>
-                <div class="md:w-1/3 ml-4">
-                    <img class="w-full h-64 object-cover rounded-md " src="../assets/images/aboutwiki.jpg" alt="">
+                <div class="md:w-1/2 ml-9">
+                    <img class="w-full h-64 object-cover rounded-md ml-12 " src="../assets/images/aboutwiki.jpg" alt="">
                 </div>
             </div>
         </div>
 
     </section>
     <section>
-    <h1 class="text-blue-300  text-4xl py-24 mt-12 ml-16">Recent Articles</h1>
+    <h1 class="text-blue-300  text-4xl py-24 mt-12 ml-16">Recently Articles</h1>
         <?php
         foreach ($wikis as $wiki) {
 

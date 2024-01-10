@@ -1,5 +1,5 @@
 <?php
-require_once('../controller/usercontroller.php');
+
 require_once('../controller/TagController.php');
 
 $tag = new tagController();
@@ -50,14 +50,17 @@ $tag->deletetag();
       <div
         class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
       >
+      <a href="wikisadmin.php">
         <i class="bi bi-bookmark-fill"></i>
         <span class="text-[15px] ml-4 text-white-200 font-bold">Wikis</span>
+        </a>
       </div>
       <div class="my-4 bg-gray-600 h-[1px]"></div>
       <div
         class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         onclick="dropdown()"
       >
+      
         <i class="bi bi-chat-left-text-fill"></i>
         <div class="flex justify-between w-full items-center">
           <span class="text-[15px] ml-4 text-white-200 font-bold">Categories</span>
@@ -88,14 +91,16 @@ $tag->deletetag();
     <table class="w-full table-auto  text-left border border-blue-500 ">
     <thead>
       <tr>
-        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50 w-64 p-4">
+        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50 w-80 p-4">
           <p class="block antialiased font-sans text-sm text-blue-gray-900 font-normal leading-none opacity-70">Category</p>
         </th>
         
-        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50  p-4">
-          <p class="block antialiased font-sans text-sm text-blue-gray-900 font-normal leading-none opacity-70">Actions</p>
+        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50 w-80   p-4">
+          <p class="block antialiased font-sans text-sm text-blue-gray-900 font-normal leading-none opacity-70">Edit</p>
         </th>
-        
+        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50    p-4">
+          <p class="block antialiased font-sans text-sm text-blue-gray-900 font-normal leading-none opacity-70">Edit</p>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -107,7 +112,6 @@ $tag->deletetag();
           </div>
         </td>
        
-        
         
           
         
@@ -126,20 +130,13 @@ $tag->deletetag();
                                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
                                                 <path fill="#e6321e" d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
                                             </svg>
-                                        </a>
-            
-          </button>
-        </td>
-       
-      </tr>
-      <?php endforeach; ?>
-          
-             
-        </div>
-
-        </div>
-
-     
+                                            </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
         
 
 

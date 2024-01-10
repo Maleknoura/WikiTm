@@ -34,6 +34,7 @@ class tagController
             exit();
         }
     }
+   
 
     public function deletetag()
     {

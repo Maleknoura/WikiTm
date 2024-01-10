@@ -11,7 +11,7 @@ class Wiki
     private $creationDate;
     private $iduser;
     private $categoryID;
-
+    private $user;
     
     // construct//
     public function __construct()
@@ -31,7 +31,7 @@ public function getcontent()
 {
     return $this->content;
 }
-public function creationDate()
+public function getcreationDate()
 {
     return $this->title;
 }
@@ -83,7 +83,7 @@ public function setcreationdate($creationDate)
         return $stmt->execute();
     }
 
-    public function addWiki($iduser, $categorieID)
+    public function addWiki()
     {
         $sql = "INSERT INTO wiki (title, content, creationDate, iduser, categorieID) VALUES (:title, :content, :creationDate, :iduser, :categorieID)";
         $stmt = $this->conn->prepare($sql);
@@ -109,31 +109,47 @@ public function setcreationdate($creationDate)
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $wikis = [];
+    
+        while ($wi = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $wiki = new Wiki();
+            $wiki->setwikiId($wi['wikiID']);
+            $wiki->setcontent($wi['content']);
+            $wiki->setcreationdate($wi['creationDate']);
+            $wiki->settitle($wi['title']);
+            
+    
+            $wikis[] = $wiki;
+        }
+    
+        return $wikis;
     }
     public function getallwiki()
     {
-        $query = "SELECT wiki.title, wiki.content, wiki.creationDate,categorie.nomCategorie, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname 
+        $query = "SELECT  wiki.wikiID, wiki.title, wiki.content, wiki.creationDate,categorie.nomCategorie, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname 
         FROM wiki
         JOIN user ON wiki.iduser = user.iduser
         JOIN categorie ON wiki.categorieID = categorie.categorieID";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $w = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         $wikis = [];
-        foreach ($w as $wi) {
+    
+        while ($wi = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $wiki = new Wiki();
             $wiki->setwikiId($wi['wikiID']);
             $wiki->setcontent($wi['content']);
-            $wiki->setcreationdate($wi['creationdate']);
+            $wiki->setcreationdate($wi['creationDate']);
             $wiki->settitle($wi['title']);
-            
+            $wiki->
+    
             $wikis[] = $wiki;
         }
+    
         return $wikis;
     }
+    
        
-
+  
 
 
 

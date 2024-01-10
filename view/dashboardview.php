@@ -9,54 +9,70 @@
 </head>
 <body>
     <!-- component -->
+    <span class=" text-white text-4xl top-5 left-4 cursor-pointer" onclick="openSidebar()">
+        <i class="bi bi-filter-left px-2 bg-gray-900 rounded-md"></i>
+    </span>
+    <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-6 w-[300px] overflow-y-auto text-center bg-blue-200 ">
+        <div class="text-gray-100 text-xl">
+            <div class="p-2.5 mt-1 flex items-center">
 
+                <img src="../assets/images/logo.png" alt="" height="15px" width="50px">
+                <!-- <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="openSidebar()"></i> -->
+            </div>
+            <div class="my-2 bg-gray-600 h-[1px]"></div>
+        </div>
 
-<div class="min-h-screen flex flex-row bg-gray-100">
-  <div class="flex flex-col w-56 bg-white rounded-r-3xl overflow-hidden">
-    <div class="flex items-center justify-center h-20 shadow-md">
-     <img src="../assets/images/logo.png" alt="" width="40px" height="50px">
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="bi bi-house-door-fill"></i>
+            <span class="text-[15px] ml-4 text-white-200 font-bold"> Dashboard</span>
+        </div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <a href="wikisadmin.php">
+                <i class="bi bi-bookmark-fill"></i>
+                <span class="text-[15px] ml-4 text-white-200 font-bold">Wikis</span>
+            </a>
+        </div>
+        <div class="my-4 bg-gray-600 h-[1px]"></div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" onclick="dropdown()">
+
+            <i class="bi bi-chat-left-text-fill"></i>
+            <div class="flex justify-between w-full items-center">
+                <span class="text-[15px] ml-4 text-white-200 font-bold">Categories</span>
+                <span class="text-sm rotate-180" id="arrow">
+                    <i class="bi bi-chevron-down"></i>
+                </span>
+            </div>
+
+        </div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="bi bi-bookmark-fill"></i>
+            <span class="text-[15px] ml-4 text-white-200 font-bold">Tags</span>
+        </div>
+
     </div>
-    <ul class="flex flex-col py-4">
-      <li>
-        <a href="#" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-          <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-home"></i></span>
-          <span class="text-sm font-medium">Statistiques</span>
-        </a>
-      </li>
-      <li>
-        <a href="categorieview.php" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-          <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-music"></i></span>
-          <span class="text-sm font-medium">Categories</span>
-        </a>
-      </li>
-      <li>
-        <a href="#" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-          <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-drink"></i></span>
-          <span class="text-sm font-medium">Wikis</span>
-        </a>
-      </li>
-      <li>
-        <a href="#" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-          <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-shopping-bag"></i></span>
-          <span class="text-sm font-medium">Tag</span>
-        </a>
-      </li>
+
+
+ <div class="flex bg-gray-100 ml-12 ">
+    
+  <div class="container mx-auto ">
+    <div class="w-64 bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
+      <div class="h-12 bg-gray-300 flex items-center justify-between">
+        <p class="mr-0 text-white text-lg pl-5">BT SUBSCRIBERS</p>
+      </div>
+      <div class="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
+        <p>TOTAL</p>
+      </div>
+      <p class="py-4 text-3xl ml-5">20,456</p>
       
-      
-      <li>
-        <a href="#" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-          <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-user"></i></span>
-          <span class="text-sm font-medium">Home</span>
-        </a>
-      </li>
-     
-        <a href="#" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-          <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-log-out"></i></span>
-          <span class="text-sm font-medium">Logout</span>
-        </a>
-      </li>
-    </ul>
+    </div>
   </div>
-</div>
+      
+
+ 
+
+ 
+
+
+
 </body>
 </html>
