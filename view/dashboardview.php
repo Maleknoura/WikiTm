@@ -63,7 +63,7 @@
         <p>TOTAL</p>
       </div>
       <p class="py-4 text-3xl ml-5">20,456</p>
-      
+        
     </div>
   </div>
       

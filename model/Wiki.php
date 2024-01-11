@@ -90,8 +90,7 @@ public function setcreationdate($creationDate)
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':content', $this->content);
         $stmt->bindParam(':creationDate', $this->creationDate);
-        $stmt->bindParam(':iduser', $iduser);
-        $stmt->bindParam(':categorieID', $categorieID);
+     
     
         $result = $stmt->execute();
     
@@ -132,6 +131,7 @@ public function setcreationdate($creationDate)
         JOIN categorie ON wiki.categorieID = categorie.categorieID";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
+        
         $wikis = [];
     
         while ($wi = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -140,8 +140,7 @@ public function setcreationdate($creationDate)
             $wiki->setcontent($wi['content']);
             $wiki->setcreationdate($wi['creationDate']);
             $wiki->settitle($wi['title']);
-            $wiki->
-    
+            
             $wikis[] = $wiki;
         }
     
@@ -158,6 +157,19 @@ public function setcreationdate($creationDate)
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":wikiID", $this->wikiID);
         $stmt->execute();
+    }
+
+    public function countWikis()
+    {
+        $sql = "SELECT COUNT(*) as total FROM votre_table_wikis";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+       
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+     
+        return $result['total'];
     }
     }
 

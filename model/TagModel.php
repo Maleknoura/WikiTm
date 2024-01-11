@@ -1,4 +1,5 @@
 <?php
+require_once "../model/Database.php";
 class tagModel{
 
     private $tagID;
@@ -55,10 +56,10 @@ class tagModel{
 
     public function editTag($tagID)
     {
-        $sql = "UPDATE tags SET nomTag = :nomT WHERE tagID = :tagID";
+        $sql = "UPDATE tags SET nomTag = :nomTag WHERE tagID = :tagID";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':tagID', $tagID);
-        $stmt->bindParam(':nomT', $this->nomTag);
+        $stmt->bindParam(':nomTag', $this->nomTag);
         return $stmt->execute();
     }
 

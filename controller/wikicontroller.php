@@ -41,4 +41,11 @@ class wikicontroller
             }
         }
     }
+    public function showWikisCount()
+    {
+        $wikiModel = new Wiki();
+        $totalWikis = $wikiModel->countWikis();
+
+     
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../model/tagModel.php');
+require_once(__DIR__ . '/../model/TagModel.php');
 
 class tagController
 {
@@ -15,27 +15,6 @@ class tagController
             exit;
         }
     }
-
-
-    public function DisplayTags()
-    {
-        $cat = new tagModel();
-        return $cat->DisplayTag();
-    }
-
-    public function EditTags()
-    {
-        $tag = new tagModel();
-        if (isset($_POST['edittag']) && isset($_POST['tagID'])) {
-            $idtag = $_POST['tagID'];
-            $tag->settag($_POST['nomTag']);
-            $tag->editTag($idtag);
-            header("Location: tagview.php");
-            exit();
-        }
-    }
-   
-
     public function deletetag()
     {
         if (isset($_GET['deletetag']) && isset($_GET['tagID']) ) {
@@ -46,4 +25,30 @@ class tagController
             exit();
         }
     }
+
+    public function DisplayTags()
+    {
+        $cat = new tagModel();
+        return $cat->DisplayTag();
+    }
+
+
+
+
+    public function EditTags()
+    {
+        $tag = new tagModel();
+        if (isset($_POST['edittag']) && isset($_POST['tagID'])) {
+            
+            $idtag = $_POST['tagID'];
+            // var_dump($idtag);
+            // die("test");
+            $tag->settag($_POST['nomTag']);
+            $tag->editTag($idtag);
+            header("Location: tagview.php");
+            exit();
+        }
+    }
+
+  
 }
