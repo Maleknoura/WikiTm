@@ -1,11 +1,14 @@
 <?php
 require_once "../controller/wikicontroller.php";
 require_once "../controller/CategorieController.php";
+require_once "../controller/TagController.php";
+require_once "../controller/usercontroller.php";
 
 
 $controller = new wikicontroller();
-$wikis = $controller->getallwiki();
-$controller->deletewiki();
+
+$recentwiki = $controller->getallwiki();
+
 
 
 
@@ -21,6 +24,8 @@ $controller->deletewiki();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <title>Document</title>
 </head>
 <body>
@@ -31,10 +36,20 @@ $controller->deletewiki();
 <button id="openModal" class="ml-4 px-6 py-2 mt-5 bg-gray-300 text-white rounded-md hover:bg-blue-300 transition duration-300">+ New Wiki</button>
 <?php
 
-        foreach ($wikis as $w) {
+
+foreach ($recentwiki as $wtest) :
 
 
-        ?>
+        $wiW = $wtest['wiki'];
+        $wC = $wtest['category'];
+        $wU = $wtest['user'];
+        $wT = $wtest['tagList'];
+       
+        
+
+
+
+?>
   <div class="container px-5 py-16 mx-auto">
     
     <div class="-my-8 divide-y-2 divide-gray-100">
@@ -42,12 +57,12 @@ $controller->deletewiki();
       <div class="flex flex-wrap md:flex-nowrap">
     
         <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-          <span class="font-semibold title-font text-gray-700"></span>
-          <span class="mt-1 text-gray-500 text-sm"><?php echo $w->getcreationDate(); ?></span>
+          <span class="font-semibold title-font text-gray-700"><?php echo ($wC->getCategorie()); ?></span>
+          <span class="mt-1 text-gray-500 text-sm"><?php echo ($wT->getTag()); ?></span>
         </div>
         <div class="md:flex-grow">
-          <h2 class="text-2xl font-medium text-gray-500 title-font mb-2">   </h2>
-          <p class="text-black "><?php echo substr($w->getcontent(),0,350); ?>...<a href="#" class="text-blue-300">View more</a></p>
+          <h2 class="text-2xl font-medium text-gray-500 title-font mb-2"><?php echo ($wiW->gettitle()); ?></h2>
+          <p class="text-black "> <?php echo substr($wiW->getcontent(), 0, 350); ?>...<a href="#" class="text-blue-300">View more</a></p>
          
         </div>
         <span class="text-gray-500 cursor-pointer mr-4" title="Edit" onclick="openEditModal()">
@@ -67,9 +82,8 @@ $controller->deletewiki();
     </div>
     
   </div>
-  <?php
-            }
-                ?>
+  <?php endforeach?>
+
 
 
    <div id="myModal" class="fixed inset-0 overflow-y-auto hidden">
@@ -89,6 +103,7 @@ $controller->deletewiki();
 
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" class="w-full mb-4 p-2 border border-gray-300 rounded-md">
+                
 
                 <button type="submit" class="bg-blue-300 text-white px-4 py-2 rounded-md hover:bg-blue-300 transition duration-300">Add Wiki</button>
             </form>

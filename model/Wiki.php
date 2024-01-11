@@ -137,26 +137,52 @@ public function setcreationdate($creationDate)
     
     public function getallwiki()
     {
-        $query = "SELECT  wiki.wikiID, wiki.title, wiki.content, wiki.creationDate,categorie.nomCategorie, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname 
+        $query = "SELECT wiki.wikiID, wiki.title, wiki.content, wiki.creationDate, c.nomCategorie, user.prenom, user.nom, GROUP_CONCAT(tags.nomTag) as tagList
         FROM wiki
         JOIN user ON wiki.iduser = user.iduser
-        JOIN categorie ON wiki.categorieID = categorie.categorieID";
+        JOIN categorie c ON c.categorieID = wiki.categorieID
+        LEFT JOIN wikitag ON wikitag.wikiID = wiki.wikiID
+        LEFT JOIN tags ON wikitag.tagID = tags.tagID
+        GROUP BY wiki.wikiID, wiki.title, wiki.content, wiki.creationDate, c.nomCategorie, user.prenom, user.nom
+        ORDER BY wiki.creationDate DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        
-        $wikis = [];
-    
-        while ($wi = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $wik = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $wikis= [];
+        foreach ($wik as $w) {
             $wiki = new Wiki();
-            $wiki->setwikiId($wi['wikiID']);
-            $wiki->setcontent($wi['content']);
-            $wiki->setcreationdate($wi['creationDate']);
-            $wiki->settitle($wi['title']);
-            
-            $wikis[] = $wiki;
+            $wiki->setwikiID($w['wikiID']);
+            $wiki->settitle($w['title']);
+            $wiki->setCreationDate($w['creationDate']);
+            $wiki->setcontent($w['content']);
+
+
+            $cat = new CategorieModel();
+            $cat->setCategorie($w['nomCategorie']);
+
+
+
+            $user = new UserModel();
+            $user->setNom($w['nom']);
+            $user->setPrenom($w['prenom']);
+
+            $ta = new tagModel();
+            $ta->setTag($w['tagList']);
+
+
+            $wikirows = [
+                'wiki' => $wiki,
+                'category' => $cat,
+                'user' => $user,
+                'tagList'=> $ta,
+            ];
+
+            $wikis[] = $wikirows;
+       
         }
-    
-        return $wikis;
+        return $wikis; 
     }
     
        

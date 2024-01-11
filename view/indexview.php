@@ -34,8 +34,7 @@ $recentwiki =$controller->getwikis();
 <?php include "head.php"?>
 
 
-    </div>
-    </div>
+
     <section>
     
         <div class="container  mt-14">
@@ -45,8 +44,8 @@ $recentwiki =$controller->getwikis();
                     <p class="mt-12 ml-9 " style="font-family:'Rubik'"> Nous nous engageons à fournir un espace où les passionnés de tous horizons peuvent partager leur expertise, collaborer à la création de contenus informatifs et participer à une communauté dynamique axée sur l'échange de connaissances. Notre objectif est de rendre l'apprentissage accessible, stimulant et inspirant pour tous.</p>
                    
                 </div>
-                <div class="md:w-1/2 ml-9">
-                    <img class="w-full h-64 object-cover rounded-md ml-12 " src="../assets/images/aboutwiki.jpg" alt="">
+                <div class="ml-9 hidden md:block ml-9 ">
+                    <img class="w-full h-80   object-cover rounded-md ml-12 " src="../assets/images/aboutwiki.jpg" alt="">
                 </div>
             </div>
         </div>

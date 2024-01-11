@@ -29,4 +29,6 @@
         <i class='bx bx-user-circle text-3xl'></i>
         </a>
         </div>
+        </div>
+    </div>
     </header>
