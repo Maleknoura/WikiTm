@@ -1,12 +1,14 @@
 <?php
 require_once "../controller/wikicontroller.php";
+require_once "../controller/CategorieController.php";
+require_once "../controller/usercontroller.php";
 
 
 $controller = new wikicontroller();
-$controller->getwiki();
+
+$recentwiki =$controller->getwikis();
 
 
-$wikis = $controller->Wiki;
 
 ?>
 
@@ -29,43 +31,7 @@ $wikis = $controller->Wiki;
 
 
     <!-- component -->
-    <header class="header sticky top-0 bg-white shadow-md flex items-center justify-between px-8 py-02">
-        <!-- logo -->
-        <h1 class="w-3/12">
-            <a href="">
-                <img src="../assets/images/logo.png" alt="" width="50">
-            </a>
-        </h1>
-
-        <!-- navigation -->
-        <nav class="nav font-semibold text-lg">
-            <ul class="flex items-center">
-                <li class="p-4  cursor-pointer active">
-                    <a href="">Home</a>
-                </li>
-               
-                <li class="p-4">
-                    <a href="wikisview.php">Wikis</a>
-                </li>
-
-            </ul>
-        </nav>
-        <div class="justify-evenly">
-
-          
-        </div>
-        <div class="w-3/12 flex ">
-
-            <a href="">
-                      
-            <svg class="h-8 p-1 " aria-hidden="true" focusable="false" data-prefix="far" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-search fa-w-16 fa-9x"><path fill="currentColor" d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z" class=""></path></svg>
-            </a>
-            <a href="">
-        <i class='bx bx-user-circle text-3xl'></i>
-        </a>
-        </div>
-        <input type="text" id="search-input" class="absolute right-0 top-0 h-full border-none focus:outline-none" placeholder="Search...">
-    </header>
+<?php include "head.php"?>
 
 
     </div>
@@ -88,20 +54,28 @@ $wikis = $controller->Wiki;
     </section>
     <section>
     <h1 class="text-blue-300  text-4xl py-24 mt-12 ml-16">Recently Articles</h1>
-        <?php
-        foreach ($wikis as $wiki) {
+    <?php
 
 
-        ?>
+foreach ($recentwiki as $wtest) :
+
+
+        $wiW = $wtest['wiki'];
+        $wC = $wtest['category'];
+        $wU = $wtest['user'];
+
+
+
+?>
             
-            <article class="max-w-2xl px-6  mx-auto space-y-12 dark:bg-gray-800 dark:text-gray-50">
+            <article class="max-w-2xl px-6 mt-4  mx-auto space-y-12 dark:bg-gray-800 dark:text-gray-50">
                 <div class="w-full mx-auto space-y-4 text-center">
-                    <h3 class="py-5 "><?php echo $wiki['title']; ?></h3>
-                    <p class="text-sm dark:text-gray-400">by
+                    <h3 class="py-5 font-bold"> <?php echo ($wiW->gettitle()); ?></h3>
+                    <p class="text-sm dark:text-gray-400">Par
                         <a rel="noopener noreferrer" href="#" target="_blank" class="underline dark:text-violet-400">
-                            <span itemprop="name"><?php echo $wiki['fullname']; ?></span>
-                        </a>on
-                        <time datetime="2021-02-12 15:34:18-0200"><?php echo $wiki['creationDate']; ?></time>
+                            <span itemprop="name"><?php echo ($wU->getnom() . ' ' . $wU->getprenom());  ?></span>
+                        </a>Dans
+                        <time datetime="2021-02-12 15:34:18-0200"><?php echo ( ($wiW->getcreationDate())); ?></time>
                     </p>
                 </div>
            
@@ -110,9 +84,11 @@ $wikis = $controller->Wiki;
                         <!-- <img src="https://source.unsplash.com/75x75/?portrait" alt="" class="self-center flex-shrink-0 w-24 h-24 border rounded-full md:justify-self-start dark:bg-gray-500 dark:border-gray-700"> -->
                         <div class="flex flex-col">
                             <h4 class="text-lg font-semibold"></h4>
-                            <p class="dark:text-gray-400"> <?php echo  substr($wiki['content'], 0, 350);  ?>...<a href="#" class="text-gray-500">View more</a></p>
+                            <p class="dark:text-gray-400"> <?php echo substr($wiW->getcontent(), 0, 350); ?>
+...<a href="#" class="text-gray-500">View more</a></p>
                         </div>
                     </div>
+
                     <div class="flex justify-center pt-4 space-x-4 align-center">
                         <a rel="noopener noreferrer" href="#" aria-label="GitHub" class="p-2 rounded-md dark:text-gray-100 hover:dark:text-violet-400">
                             <svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current">
@@ -135,9 +111,8 @@ $wikis = $controller->Wiki;
                             </svg>
                         </a>
                     </div>
-                <?php
-            }
-                ?>
+                    <div class="pt-12 border-t dark:border-gray-900 dark:border-white">
+                    <?php endforeach?>
                 </div>
             </article>
     </section>

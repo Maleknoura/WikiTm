@@ -70,6 +70,15 @@ class tagModel{
         $stmt->bindParam(':tagID', $tagID);
         return $stmt->execute();
     }
+
+    // public function countTag()
+    // {
+    //     $sql = "SELECT COUNT(*) as total FROM tags";
+    //     $stmt = $this->conn->prepare($sql);
+    //     $stmt->execute(); 
+    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     return $result['total'];
+    // }
     
 
 }

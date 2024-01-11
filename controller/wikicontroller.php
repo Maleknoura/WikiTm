@@ -7,10 +7,10 @@ class wikicontroller
     public $Wiki;
     private $wikiID;
 
-    public function getwiki(){
+    public function getwikis(){
 
         $wikimodel = new Wiki();
-        $this->Wiki = $wikimodel->getwiki();
+        return $wikimodel->getwiki();
     }
 
     public function getallwiki()
@@ -20,12 +20,17 @@ class wikicontroller
         return $wikimodel->getallwiki();
        
     }
+
+
+
     public function addWiki()
     {
 
         $wikimodel = new Wiki();
         return $wikimodel->addWiki();
     }
+
+
 
     public function deletewiki()
     {
@@ -41,11 +46,12 @@ class wikicontroller
             }
         }
     }
-    public function showWikisCount()
-    {
-        $wikiModel = new Wiki();
-        $totalWikis = $wikiModel->countWikis();
 
-     
-    }
+
+    // public function showWikisCount()
+    // {
+    //     $wikiModel = new Wiki();
+    //     $totalWikis = $wikiModel->countWikis();
+
+    // }
 }

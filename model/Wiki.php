@@ -63,17 +63,7 @@ public function setcreationdate($creationDate)
 
     
 
-    // set magic
-    // public function __set($parametre, $value)
-    // {
-    //     $this->$parametre = $value;
 
-    // }
-    // // get magic
-    // public function __get($parametre)
-    // {
-    //    return  $this->$parametre;
-    // }
     public function addWikiTag($wikiID, $tagID)
     {
         $sql = "INSERT INTO wikitag (wikiID, tagID) VALUES (:wikiID, :tagID)";
@@ -82,7 +72,7 @@ public function setcreationdate($creationDate)
         $stmt->bindParam(':tagID', $tagID);
         return $stmt->execute();
     }
-
+//    ajouter wikis//
     public function addWiki()
     {
         $sql = "INSERT INTO wiki (title, content, creationDate, iduser, categorieID) VALUES (:title, :content, :creationDate, :iduser, :categorieID)";
@@ -98,31 +88,53 @@ public function setcreationdate($creationDate)
     
         return $result ? $wikiID : false;
     }
+
+    // afficher recent wikis//
     public function getwiki()
     {
-        $query = "SELECT wiki.title, wiki.content, wiki.creationDate, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname  
+        $query = "SELECT wiki.wikiID, wiki.title, wiki.content, wiki.creationDate,c.nomCategorie, user.prenom, user.nom
         FROM wiki
         JOIN user ON wiki.iduser = user.iduser
+        JOIN categorie c ON c.categorieID = wiki.categorieID
         ORDER BY wiki.creationDate DESC
         LIMIT 2";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $wikis = [];
-    
-        while ($wi = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $wik = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $wikis= [];
+        foreach ($wik as $w) {
             $wiki = new Wiki();
-            $wiki->setwikiId($wi['wikiID']);
-            $wiki->setcontent($wi['content']);
-            $wiki->setcreationdate($wi['creationDate']);
-            $wiki->settitle($wi['title']);
-            
-    
-            $wikis[] = $wiki;
+            $wiki->setwikiID($w['wikiID']);
+            $wiki->settitle($w['title']);
+            $wiki->setCreationDate($w['creationDate']);
+            $wiki->setcontent($w['content']);
+
+
+            $cat = new CategorieModel();
+            $cat->setCategorie($w['nomCategorie']);
+
+
+
+            $user = new UserModel();
+            $user->setNom($w['nom']);
+            $user->setPrenom($w['prenom']);
+
+
+            $wikirows = [
+                'wiki' => $wiki,
+                'category' => $cat,
+                'user' => $user,
+            ];
+
+            $wikis[] = $wikirows;
+       
         }
-    
-        return $wikis;
+        return $wikis; 
     }
+
+    
+ //afficher tout les wikis//      
+    
     public function getallwiki()
     {
         $query = "SELECT  wiki.wikiID, wiki.title, wiki.content, wiki.creationDate,categorie.nomCategorie, user.prenom, user.nom,CONCAT(user.prenom, ' ', user.nom) as fullname 
@@ -151,7 +163,6 @@ public function setcreationdate($creationDate)
   
 
 
-
     public function deletewiki(){
         $query = "DELETE FROM `wiki` WHERE wikiID = :wikiID";
         $stmt = $this->conn->prepare($query);
@@ -159,18 +170,16 @@ public function setcreationdate($creationDate)
         $stmt->execute();
     }
 
-    public function countWikis()
-    {
-        $sql = "SELECT COUNT(*) as total FROM votre_table_wikis";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
 
-       
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-     
-        return $result['total'];
-    }
+    // public function countWikis()
+    // {
+    //     $sql = "SELECT COUNT(*) as total FROM wiki";
+    //     $stmt = $this->conn->prepare($sql);
+    //     $stmt->execute(); 
+    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     return $result['total'];
+    // }
     }
 
    

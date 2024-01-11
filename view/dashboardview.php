@@ -1,3 +1,17 @@
+
+<?php
+require_once('../controller/wikicontroller.php');
+
+$wikicontroller = new WikiController();
+// $totalWikis = $wikicontroller->showWikisCount();
+
+?>
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +76,7 @@
       <div class="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
         <p>TOTAL</p>
       </div>
-      <p class="py-4 text-3xl ml-5">20,456</p>
+      <!-- <p class="py-4 text-3xl ml-5"><?php echo $totalWikis; ?></p> -->
         
     </div>
   </div>
