@@ -60,4 +60,12 @@ class usercontroller
             exit();
         }
     }
+   public function statuser(){
+
+    $userModel = new UserModel();
+    return $userStatistics = $userModel->getUserStatistics();
+   }
+
+
+
 }

@@ -21,6 +21,11 @@ class wikicontroller
         return $wikimodel->getallwiki();
     }
 
+   public function statiwikis(){
+    $wikiModel = new Wiki();
+     return $statiwikis = $wikiModel->getWikiStatistics();
+   } 
+
 
     public function addWikis()
     {

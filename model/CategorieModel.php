@@ -81,14 +81,12 @@ class CategorieModel{
         return $stmt->execute();
     }
     
-    // public function countcategories()
-    // {
-    //     $sql = "SELECT COUNT(*) as total FROM categorie";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->execute(); 
-    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    //     return $result['total'];
-    // }
+    public function getCategoryStatistics()
+    {
+        $sql = "SELECT COUNT(*) AS totalCategories FROM categorie";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
 
 }

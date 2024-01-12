@@ -50,6 +50,7 @@ $tags = $tag->DisplayTags();
 
             </div>
         </div>
+        <!-- ghander div id  -->
         <?php
 
 
@@ -102,6 +103,7 @@ $tags = $tag->DisplayTags();
 
             </div>
         <?php endforeach ?>
+      
         <div class="search-results flex flex-wrap mx-auto md:px-12 flex-grow"></div>
 
 
@@ -182,12 +184,12 @@ $tags = $tag->DisplayTags();
                 const searchInput = document.querySelector('#search');
                 const searchResultsContainer = document.querySelector('.search-results');
                 const originalCardsContainer = document.getElementById('wikisContent');
-
+// querySelector
                 searchInput.addEventListener('input', function() {
                     const param = encodeURIComponent(searchInput.value.trim());
                     console.log(param);
                     if (param === '') {
-                        // originalCardsContainer.style.display = 'flex';
+                       
                         searchResultsContainer.innerHTML = '';
                     } else {
 
@@ -198,6 +200,7 @@ $tags = $tag->DisplayTags();
                             if (this.status == 200 && this.readyState == 4) {
                                 var reponse = JSON.parse(this.responseText);
                                 console.log(reponse);
+                                // smietconst.innerHTML=''
 
                             }
                         }
@@ -258,7 +261,7 @@ $tags = $tag->DisplayTags();
                 const selectedTagName = selectElement.options[selectElement.selectedIndex].text;
 
                 if (selectedTagId && !document.getElementById(`selectedTag_${selectedTagId}`)) {
-                    // Add the selected tag to the container
+                  
                     const tagDiv = document.createElement('div');
                     tagDiv.id = `selectedTag_${selectedTagId}`;
                     tagDiv.className = 'flex items-center space-x-2 bg-blue-200 rounded-lg p-2 mb-2';

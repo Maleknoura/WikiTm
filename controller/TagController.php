@@ -49,6 +49,13 @@ class tagController
             exit();
         }
     }
+public function statTag(){
+    $tagModel = new tagModel();
 
+   
+    $tagStatistics = $tagModel->getTagStatistics();
+    
+}
+    
   
 }

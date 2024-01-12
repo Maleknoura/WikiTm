@@ -49,4 +49,11 @@ class categorieController
             exit();
         }
     }
+
+public function stacategorie(){
+
+    $categoryModel = new CategorieModel();
+   return $categoryStatistics = $categoryModel->getCategoryStatistics();
+}
+    
 }

@@ -243,12 +243,10 @@ class Wiki
     }
 
 
-    // public function countWikis()
-    // {
-    //     $sql = "SELECT COUNT(*) as total FROM wiki";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->execute(); 
-    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    //     return $result['total'];
-    // }
+    public function getWikiStatistics()
+    {
+        $sql = "SELECT COUNT(*) AS totalWikis FROM wiki";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

@@ -135,13 +135,13 @@
             header("Location: ../view/loginview.php");
             exit();
         }
-        // public function countusers()
-        // {
-        //     $sql = "SELECT COUNT(*) as total FROM user";
-        //     $stmt = $this->conn->prepare($sql);
-        //     $stmt->execute(); 
-        //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        //     return $result['total'];
-        // }
+
+
+        public function getUserStatistics()
+    {
+        $sql = "SELECT COUNT(*) AS totalUsers FROM user";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     }

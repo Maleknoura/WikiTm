@@ -71,14 +71,12 @@ class tagModel{
         return $stmt->execute();
     }
 
-    // public function countTag()
-    // {
-    //     $sql = "SELECT COUNT(*) as total FROM tags";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->execute(); 
-    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    //     return $result['total'];
-    // }
+    public function getTagStatistics()
+    {
+        $sql = "SELECT COUNT(*) AS totalTags FROM tags";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
 
 }
