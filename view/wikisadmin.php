@@ -2,9 +2,15 @@
 
 
 require_once('../controller/wikicontroller.php');
+require_once "../controller/CategorieController.php";
+require_once "../controller/TagController.php";
+require_once "../controller/usercontroller.php";
 
-$wikimodel = new wikicontroller();
-$wikis = $wikimodel->getallwiki();
+
+$controller = new wikicontroller();
+
+$recentwiki = $controller->getallwiki();
+$controller->archivedwiki();
 
 
 
@@ -87,11 +93,26 @@ $wikis = $wikimodel->getallwiki();
         <h2 class="text-xl text-center font-semibold">All wikis</h2>
     </div>
 
-    <?php foreach ($wikis as $w) : ?>
+    <?php
+
+
+foreach ($recentwiki as $wtest) :
+
+
+        $wiW = $wtest['wiki'];
+        $wC = $wtest['category'];
+        $wU = $wtest['user'];
+        $wT = $wtest['tagList'];
+       
+        
+
+
+
+?>
         <div class="px-6 py-4">
             <div class="flex justify-between">
-                <p class="text-lg "><?php echo $w->gettitle(); ?></p>
-                <span class="text-green-600 ml-5">Archiver</span>
+                <p class="text-lg "><?php echo ($wiW->gettitle()); ?></p>
+                <span class="text-green-600 ml-5"><a href="wikicontroller.php?archivewiki&wikiID=<?php echo $wikiID; ?>">Archive</a></span>
             </div>
         </div>
         <div class="absolute inset-0 border border-blue-600 opacity-75 rounded-md shadow-4xl"></div>

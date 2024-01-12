@@ -2,6 +2,8 @@
 require_once "../model/Database.php";
 
 
+
+
 class Wiki
 {
     private $conn;
@@ -9,60 +11,72 @@ class Wiki
     private $title;
     private $content;
     private $creationDate;
+
+    private $categoryID; 
     private $iduser;
-    private $categoryID;
-    private $user;
-    
-    // construct//
+
+    // Constructor
     public function __construct()
     {
         $this->conn = Database::getDb()->getConn();
     }
-// getters//
-public function getid()
-{
-    return $this->wikiID;
-}
-public function gettitle()
-{
-    return $this->title;
-}
-public function getcontent()
-{
-    return $this->content;
-}
-public function getcreationDate()
-{
-    return $this->title;
-}
-public function iduser()
-{
-    return $this->iduser;
-}
 
-//setters//
-public function setwikiId($wikiID)
-{
-    $this->wikiID = $wikiID;
-}
-public function settitle($title)
-{
-    $this->title = $title;
-}
-public function setcontent($content)
-{
-    $this->content = $content;
-}
-public function setcreationdate($creationDate)
-{
-    $this->creationDate = $creationDate;
-}
+    // Getters
+    public function getid()
+    {
+        return $this->wikiID;
+    }
 
+    public function gettitle()
+    {
+        return $this->title;
+    }
 
+    public function getcontent()
+    {
+        return $this->content;
+    }
 
+    public function getcreationDate()
+    {
+        return $this->creationDate;
+    }
 
-    
+    public function getidUser() 
+    {
+        return $this->iduser;
+    }
 
+    // Setters
+    public function setwikiId($wikiID)
+    {
+        $this->wikiID = $wikiID;
+    }
+
+    public function settitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function setcontent($content)
+    {
+        $this->content = $content;
+    }
+
+    public function setcreationdate($creationDate)
+    {
+        $this->creationDate = $creationDate;
+    }
+
+    public function setCategoryId($categoryID) 
+    {
+        $this->categoryID = $categoryID;
+    }
+
+    public function setUserId($iduser) 
+    {
+        $this->iduser = $iduser;
+    }
 
     public function addWikiTag($wikiID, $tagID)
     {
@@ -72,22 +86,26 @@ public function setcreationdate($creationDate)
         $stmt->bindParam(':tagID', $tagID);
         return $stmt->execute();
     }
-//    ajouter wikis//
+
+    // Add wikis
     public function addWiki()
     {
-        $sql = "INSERT INTO wiki (title, content, creationDate, iduser, categorieID) VALUES (:title, :content, :creationDate, :iduser, :categorieID)";
+        $sql = "INSERT INTO wiki (title, content, iduser, categorieID) VALUES (:title, :content, :iduser, :categorieID)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':content', $this->content);
-        $stmt->bindParam(':creationDate', $this->creationDate);
-     
-    
+        $stmt->bindParam(':iduser', $this->iduser);
+        $stmt->bindParam(':categorieID', $this->categoryID); 
+
         $result = $stmt->execute();
-    
+
         $wikiID = $this->conn->lastInsertId();
-    
+
         return $result ? $wikiID : false;
     }
+
+
+
 
     // afficher recent wikis//
     public function getwiki()
@@ -101,7 +119,7 @@ public function setcreationdate($creationDate)
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $wik = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $wikis= [];
+        $wikis = [];
         foreach ($wik as $w) {
             $wiki = new Wiki();
             $wiki->setwikiID($w['wikiID']);
@@ -127,14 +145,13 @@ public function setcreationdate($creationDate)
             ];
 
             $wikis[] = $wikirows;
-       
         }
-        return $wikis; 
+        return $wikis;
     }
 
-    
- //afficher tout les wikis//      
-    
+
+    //afficher tout les wikis//      
+
     public function getallwiki()
     {
         $query = "SELECT wiki.wikiID, wiki.title, wiki.content, wiki.creationDate, c.nomCategorie, user.prenom, user.nom, GROUP_CONCAT(tags.nomTag) as tagList
@@ -143,6 +160,7 @@ public function setcreationdate($creationDate)
         JOIN categorie c ON c.categorieID = wiki.categorieID
         LEFT JOIN wikitag ON wikitag.wikiID = wiki.wikiID
         LEFT JOIN tags ON wikitag.tagID = tags.tagID
+        WHERE isarchived IS NULL
         GROUP BY wiki.wikiID, wiki.title, wiki.content, wiki.creationDate, c.nomCategorie, user.prenom, user.nom
         ORDER BY wiki.creationDate DESC";
         $stmt = $this->conn->prepare($query);
@@ -150,7 +168,7 @@ public function setcreationdate($creationDate)
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $wik = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $wikis= [];
+        $wikis = [];
         foreach ($wik as $w) {
             $wiki = new Wiki();
             $wiki->setwikiID($w['wikiID']);
@@ -176,26 +194,53 @@ public function setcreationdate($creationDate)
                 'wiki' => $wiki,
                 'category' => $cat,
                 'user' => $user,
-                'tagList'=> $ta,
+                'tagList' => $ta,
             ];
 
             $wikis[] = $wikirows;
-       
         }
-        return $wikis; 
+        return $wikis;
     }
-    
-       
-  
+
+    public function archivedWiki($wikiID)
+    {
+        $sql = "UPDATE wiki SET isarchived = 1 WHERE wikiID = :wikiID";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':wikiID', $wikiID);
+        return $stmt->execute();
+    }
 
 
-    public function deletewiki(){
+
+    public function deletewiki()
+    {
         $query = "DELETE FROM `wiki` WHERE wikiID = :wikiID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":wikiID", $this->wikiID);
         $stmt->execute();
     }
 
+    public function searchWiki($param)
+    {
+        $param = '%' . $param . '%';
+
+        $query = "SELECT w.wikiID, w.title, w.content, w.creationDate, c.nomCategorie, u.nom, u.prenom, GROUP_CONCAT(t.nomTag) as tagnames
+        FROM wiki w
+        LEFT JOIN categorie c ON w.categorieID = c.categorieID
+        LEFT JOIN user u ON w.iduser = u.iduser
+        LEFT JOIN wikitag wt ON w.wikiID = wt.wikiID
+        LEFT JOIN tags t ON t.tagID = wt.tagID
+        WHERE isarchived IS NULL AND (w.title LIKE :param OR c.nomCategorie LIKE :param OR t.nomTag LIKE :param)
+        GROUP BY w.wikiID
+        ORDER BY w.creationDate DESC";
+
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':param', $param, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
     // public function countWikis()
@@ -206,7 +251,4 @@ public function setcreationdate($creationDate)
     //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     //     return $result['total'];
     // }
-    }
-
-   
-    
+}
