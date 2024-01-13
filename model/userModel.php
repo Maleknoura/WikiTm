@@ -8,7 +8,7 @@
         private $prenom;
         private $email;
         private $pass;
-        private $tel;
+       
         private $role;
         private $conn;
 
@@ -65,15 +65,9 @@
         {
             $this->pass = $pass;
         }
-        public function gettel()
-        {
-            return $this->tel;
-        }
+        
 
-        public function settel($tel)
-        {
-            $this->tel = $tel;
-        }
+      
         public function getrole()
         {
             return $this->role;
@@ -98,32 +92,31 @@
 
             $this->pass = password_hash($this->pass, PASSWORD_DEFAULT);
 
-            $query = "INSERT INTO `user` (nom, prenom, email, pass, tel,role)
-                    VALUES (:username, :surname, :email, :password, :tel,'auteur')";
+            $query = "INSERT INTO `user` (nom, prenom, email, pass,role)
+                    VALUES (:username, :surname, :email, :password, ':auteur')";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":username", $this->nom);
             $stmt->bindParam(":surname", $this->prenom);
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":password", $this->pass);
-            $stmt->bindParam(":tel", $this->tel);
+          
 
             $stmt->execute();
         }
 
+      
         public function login()
         {
-            $query = "SELECT iduser,nom, pass FROM user WHERE email=:email";
+            $query = "SELECT * FROM user WHERE email=:email";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":email", $this->email);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($result && password_verify($this->pass, $result['pass'])) {
-                session_start();
-                $_SESSION['iduser'] = $result['iduser'];
-                $_SESSION['nom'] = $result['nom'];
-                return true;
+               
+                return $result;
             } else {
                 return false;
             }

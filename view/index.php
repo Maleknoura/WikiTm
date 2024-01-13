@@ -84,7 +84,7 @@ foreach ($recentwiki as $wtest) :
                         <div class="flex flex-col">
                             <h4 class="text-lg font-semibold"></h4>
                             <p class="dark:text-gray-400"> <?php echo substr($wiW->getcontent(), 0, 350); ?>
-...<a href="#" class="text-gray-500">View more</a></p>
+...<a href="detailofwiki.php?detailofwiki&wikiID=<?php echo $wiW->getid(); ?>" class="text-blue-300"" class="text-gray-500">View more</a></p>
                         </div>
                     </div>
 

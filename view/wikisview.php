@@ -241,7 +241,7 @@ $wikiDet = $controller->detofwikis();
                                         </div>
                                         <div class="md:flex-grow">
                                             <h2 class="text-2xl font-medium text-gray-500 title-font mb-2">${element.title}</h2>
-                                            <p class="text-black "> ${element.content.substring(0, 350)}...<a href="#" class="text-blue-300">View more</a></p>
+                                            <p class="text-black "> ${element.content.substring(0, 350)}...<a href="detailofwiki.php?detailofwiki&wikiID=<?php echo $wiW->getid(); ?>" class="text-blue-300">View more</a></p>
 
                                         </div>
                                     <span class="text-gray-500 cursor-pointer mr-4" title="Edit" onclick="openEditModal()">

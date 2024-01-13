@@ -10,7 +10,7 @@
         <nav class="nav font-semibold text-lg">
             <ul class="flex items-center">
                 <li class="p-4  cursor-pointer active">
-                    <a href="indexview.php">Home</a>
+                    <a href="index.php">Home</a>
                 </li>
                
                 <li class="p-4">
@@ -25,7 +25,7 @@
         </div>
         <div class=" flex ">
 
-            <a href="">
+            <a href="dashboardview.php?deconn">
         <i class='bx bx-user-circle text-3xl'></i>
         </a>
         </div>
