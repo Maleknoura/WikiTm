@@ -20,7 +20,7 @@ class usercontroller
             $error = $user->register(); 
 
             if (empty($error)) {
-                header('Location: ../view/dahboardview.php');
+                header('Location: ../view/indexview.php');
                 exit();
             }
 
@@ -45,18 +45,18 @@ class usercontroller
     }
     
     public function logout(){
-        if (isset($_GET['deconn'])) {
-            $user = new UserModel();
-            return $user->logout();
+        session_destroy();
+        header("Location: ../view/loginview.php");
+        exit();
         }
-    }
+    
 
     public function isLoggedIn()
     {
         session_start();
 
         if (!isset($_SESSION['iduser'])) {
-            header("Location: login.php");
+            header("Location: loginview.php");
             exit();
         }
     }

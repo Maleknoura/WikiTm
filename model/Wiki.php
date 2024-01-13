@@ -212,12 +212,13 @@ class Wiki
 
 
 
-    public function deletewiki()
+    public function deletewiki($wikiID)
     {
-        $query = "DELETE FROM `wiki` WHERE wikiID = :wikiID";
+        $query = "DELETE FROM wiki WHERE wikiID = :wikiID";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":wikiID", $this->wikiID);
-        $stmt->execute();
+        $stmt->bindParam(":wikiID", $wikiID);
+        return $stmt->execute();
+        // $stmt->execute();
     }
 
     public function searchWiki($param)
@@ -295,4 +296,45 @@ class Wiki
 
         return $wikis;
     }
+
+   public function updateWikis($categorieID,$tagID)
+{
+    try {
+        $this->conn->beginTransaction();
+
+        // Update wiki
+        $stmt = $this->conn->prepare("UPDATE wiki SET title = :title, content = :content, categorieID = :categorieID WHERE wikiID = :wikiID");
+        $stmt->bindParam(':wikiID', $this->wikiID);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':content', $this->content);
+        $stmt->bindParam(':categorieID', $categorieID);
+        $stmt->execute();
+
+        // Delete existing tags for the wiki
+        $sqlDeleteTags = $this->conn->prepare("DELETE FROM wikitag WHERE wikiID = :wikiID");
+        $sqlDeleteTags->bindParam(':wikiID', $this->wikiID);
+        $sqlDeleteTags->execute();
+
+        // Add new tags for the wiki
+        if (!empty($tagID)) {
+            foreach ($tagID as $tagID) {
+                $sqlInsertTags = $this->conn->prepare("INSERT INTO wikitag (wikiID, tagID) VALUES (:wikiID, :tagID)");
+                $sqlInsertTags->bindParam(':wikiID', $this->wikiID);
+                $sqlInsertTags->bindParam(':tagID', $tagID);
+                $sqlInsertTags->execute();
+            }
+        }
+
+        $this->conn->commit();
+    } catch (PDOException $e) {
+        $this->conn->rollBack();
+      
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+
+    return true;
+}
+
+    
 }

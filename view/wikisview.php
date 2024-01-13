@@ -9,6 +9,8 @@ $controller = new wikicontroller();
 
 $recentwiki = $controller->getallwiki();
 $controller->addWikis();
+$controller->updateWiki();
+$controller->deletewiki();
 
 $cat = new categorieController();
 $cats = $cat->DisplayCategories();
@@ -65,7 +67,6 @@ $wikiDet = $controller->detofwikis();
 
 
 
-
             ?>
                 <div class="container px-5 py-16 mx-auto">
 
@@ -82,7 +83,7 @@ $wikiDet = $controller->detofwikis();
                                 <p class="text-black "> <?php echo substr($wiW->getcontent(), 0, 350); ?>...<a href="detailofwiki.php?detailofwiki&wikiID=<?php echo $wiW->getid(); ?>" class="text-blue-300">View more</a></p>
 
                             </div>
-                            <span class="text-gray-500 cursor-pointer mr-4" title="Edit" onclick="openEditModal()">
+                            <span class="text-gray-500 cursor-pointer mr-4" title="Edit" name="update" onclick="openEditModal() ">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(59, 130, 246);">
                                     <path d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z"></path>
                                     <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
@@ -90,13 +91,13 @@ $wikiDet = $controller->detofwikis();
                             </span>
                           
             
-               <span class="text-red-500 cursor-pointer" title="Delete">
-                    <a title="delete" class="text-red-500 cursor-pointer" href="wikis.php?deletewiki&wikiID=<?php echo $wiW->getid(); ?>">
+               <!-- <span class="text-red-500 cursor-pointer"  title="Delete"> -->
+               <a title="delete" class="text-red-500 cursor-pointer" href="wikisview.php?deletewiki&wikiID=<?php echo $wiW->getid(); ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </a>
-                </span>
+                <!-- </span> -->
    
 
 
@@ -156,32 +157,52 @@ $wikiDet = $controller->detofwikis();
             </div>
         </div>
 
-
         <div id="editModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50">
-            <div class="flex items-center justify-center min-h-screen">
-                <div class="bg-white p-6 mx-4 rounded-md max-w-md w-full">
-                    <h2 class="text-2xl font-semibold mb-4">Modifier le Wiki</h2>
-                    <form>
-                        <label for="editTitle">Title:</label>
-                        <input type="text" id="editTitle" name="editTitle" class="w-full mb-2 p-2 border border-gray-300 rounded-md">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-6 mx-4 rounded-md max-w-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Edit Wiki</h2>
+            <form action="" method="post">
+                <label for="editTitle">Title:</label>
+                <input type="text" id="editTitle" name="title" class="w-full mb-2 p-2 border border-gray-300 rounded-md">
 
-                        <label for="editContent">Content:</label>
-                        <textarea id="editContent" name="editContent" class="w-full mb-2 p-2 border border-gray-300 rounded-md" rows="4"></textarea>
+                <label for="editContent">Content:</label>
+                <textarea id="editContent" name="content" class="w-full mb-2 p-2 border border-gray-300 rounded-md" rows="4"></textarea>
 
-                        <label for="editAuthor">Author:</label>
-                        <input type="text" id="editAuthor" name="editAuthor" class="w-full mb-2 p-2 border border-gray-300 rounded-md">
-
-                        <label for="editDate">Date:</label>
-                        <input type="date" id="editDate" name="editDate" class="w-full mb-4 p-2 border border-gray-300 rounded-md">
-
-                        <div class="flex justify-end">
-                            <button type="button" onclick="closeEditModal()" class="bg-gray-300 text-white px-4 py-2 rounded-md hover:bg-gray-400 transition duration-300">Fermer</button>
-                            <button type="submit" class="ml-2 bg-blue-300 text-white px-4 py-2 rounded-md hover:bg-blue-300 transition duration-300">Enregistrer</button>
-                        </div>
-                    </form>
+                <div class="col-span-2">
+                    <label for="editCategory" class="block mb-2 text-sm font-medium text-gray-900 text-black">Category</label>
+                    <select id="editCategory" name="categorieID" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100 border-gray-500 placeholder-gray-400 text-black focus:ring-primary-500 focus:border-primary-500">
+                        <option selected disabled>Select category</option>
+                        <?php
+                        foreach ($cats as $category) {
+                            echo "<option value='{$category->getCategorieID()}'>{$category->getCategorie()}</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
-            </div>
+
+                <div class="col-span-2">
+                    <label for="editTags" class="block mb-2 text-sm font-medium text-gray-900 text-black">Tags</label>
+                    <select id="editTags" name="selectedTagIds" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100 border-gray-500 placeholder-gray-400 text-black focus:ring-primary-500 focus:border-primary-500" onchange="handleEditTagSelection(this)">
+                        <option selected disabled>Select tags</option>
+                        <?php
+                        foreach ($tags as $tag) {
+                            echo "<option value='{$tag->getTagID()}'>{$tag->getTag()}</option>";
+                        }
+                        ?>
+                    </select>
+                    <input type="hidden" id="selectedEditTagIdsInput" name="selectedTagIds" value="">
+                    <div id="selectedEditTagsContainer" class="mt-2 flex flex-wrap space-x-2"></div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="closeEditModal()" class="bg-gray-300 text-white px-4 py-2 rounded-md hover:bg-gray-400 transition duration-300">Close</button>
+                    <button type="submit" name="update" class="ml-2 bg-blue-300 text-white px-4 py-2 rounded-md hover:bg-blue-300 transition duration-300">Save</button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
+
         <!-- //search -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -261,13 +282,7 @@ $wikiDet = $controller->detofwikis();
            
         </script>
 
-        <script>
-            function confirmDelete() {
-                return confirm("Êtes-vous sûr de vouloir supprimer ce wiki ?");
-            }
-        </script>
-
-
+      
         <script>
             function openEditModal() {
                 document.getElementById('editModal').classList.remove('hidden');
@@ -332,6 +347,52 @@ $wikiDet = $controller->detofwikis();
                 }
             }
         </script>
+        <script>
+    function handleEditTagSelection(selectElement) {
+        const selectedEditTagsContainer = document.getElementById('selectedEditTagsContainer');
+        const selectedEditTagIdsInput = document.getElementById('selectedEditTagIdsInput');
+
+        const selectedTagId = selectElement.value;
+        const selectedTagName = selectElement.options[selectElement.selectedIndex].text;
+
+        if (selectedTagId && !document.getElementById(`selectedEditTag_${selectedTagId}`)) {
+
+            const tagDiv = document.createElement('div');
+            tagDiv.id = `selectedEditTag_${selectedTagId}`;
+            tagDiv.className = 'flex items-center space-x-2 bg-blue-200 rounded-lg p-2 mb-2';
+
+            const tagText = document.createElement('span');
+            tagText.textContent = selectedTagName;
+
+            const removeIcon = document.createElement('i');
+            removeIcon.className = 'bx bx-x cursor-pointer';
+
+            removeIcon.addEventListener('click', function() {
+                selectedEditTagsContainer.removeChild(tagDiv);
+                updateHiddenEditInput();
+            });
+
+            tagDiv.appendChild(tagText);
+            tagDiv.appendChild(removeIcon);
+
+            selectedEditTagsContainer.appendChild(tagDiv);
+            updateHiddenEditInput();
+        }
+
+        selectElement.value = '';
+
+        function updateHiddenEditInput() {
+            const selectedEditTagDivs = selectedEditTagsContainer.querySelectorAll('div');
+            const selectedEditTagIds = Array.from(selectedEditTagDivs).map((div) => div.id.replace('selectedEditTag_', ''));
+            selectedEditTagIdsInput.value = JSON.stringify(selectedEditTagIds);
+        }
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+    }
+</script>
+
     </section>
 </body>
 
