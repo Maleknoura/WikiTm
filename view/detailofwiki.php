@@ -1,7 +1,20 @@
 <?php
 require_once "../controller/wikicontroller.php";
+require_once "../controller/CategorieController.php";
+require_once "../controller/TagController.php";
+require_once "../controller/usercontroller.php";
+
 $controller = new wikicontroller();
-$wikis = $controller->getallwiki();
+$recentwiki = $controller->getallwiki();
+$recentwiki = $controller->detofwikis();
+
+$cat = new categorieController();
+$cats = $cat->DisplayCategories();
+
+$tag = new tagController();
+$tags = $tag->DisplayTags();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,27 +28,51 @@ $wikis = $controller->getallwiki();
 </head>
 <body>
     <?php include "head.php"?>
-    <div class="min-h-screen container flex flex-col justify-center overflow-hidden sm:py-12">
-        <div class="max-w-5xl mx-auto">
+    <div class="min-h-screen  flex flex-col justify-center align-center overflow-hidden sm:py-12">
+        <div class="max-w-5xl flex  mx-auto">
             <div class="relative group">
                 <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
                 <div class="relative px-7 py-6 bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex flex-col sm:flex-row items-top justify-start space-x-6">
+                <?php
 
-                    <h3 class="text-2xl sm:text-xl lg:text-xl xl:text-xl">technologie</h3>
+
+ foreach ($recentwiki as $wtest) :
+
+
+    $wiW = $wtest['wiki'];
+    $wC = $wtest['category'];
+    $wU = $wtest['user'];
+    $wT = $wtest['tagnames'];
+
+
+
+
+
+?>
+                    <h3 class="text-2xl sm:text-xl lg:text-xl xl:text-xl"><?php echo ($wC->getCategorie()); ?></h3>
 
                     <div class="space-y-2">
-                        <h2 class="font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl">titlehfdiéu"hoéh"oifhoéi</h2>
-                        <p class="leading-6 text-sm sm:text-base lg:text-lg xl:text-xl">L'intelligence artificielle (IA) représente l'avant-garde technologique du XXIe siècle, marquant une ère où les machines sont capables de simuler l'intelligence humaine. Ce domaine de la science informatique se consacre à développer des algorithmes et des modèles qui permettent aux machines d'apprendre, de raisonner et de prendre des décisions autonomes. L'IA est devenue omniprésente dans notre vie quotidienne, influençant des domaines allant de la santé à l'économie en passant par les loisirs.</p>
+                        <h2 class="font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl"><?php echo ($wiW->gettitle()); ?></h2>
+                        <p class="leading-6 text-sm sm:text-base lg:text-lg xl:text-xl"><?php echo ($wiW->getcontent()); ?></p>
 
                         <a href="https://braydoncoyer.dev/blog/tailwind-gradients-how-to-make-a-glowing-gradient-background" class="block text-indigo-400 group-hover:text-slate-800 transition duration-200" target="_blank"></a>
 
-                        <h4 class="flex justify-end text-sm sm:text-base lg:text-lg xl:text-xl">by test test</h4><br>
-                        <h4 class="flex justify-end text-sm sm:text-base lg:text-lg xl:text-xl">cree le 05/09/2016</h4>
+                        <h4 class="flex justify-end text-sm sm:text-base lg:text-lg xl:text-xl">by<?php echo ($wU->getnom() . ' ' . $wU->getprenom());  ?></h4><br>
+                        <h4 class="flex justify-end text-sm sm:text-base lg:text-lg xl:text-xl">cree le<?php echo ( ($wiW->getcreationDate())); ?></h4>
                         <div class="flex justify-center sm:justify-end gap-2 sm:gap-9 align-center text-sm sm:text-base lg:text-lg xl:text-xl">
-                            <p>tag1</p>
-                            <p>tag1</p>
-                            <p>tag1</p>
-                            <p>tag1</p>
+                        <div class="flex bg-white sm:rounded-lg p-1 gap-8 ml-2">
+                        <?php foreach ($wT->getTag()as $tag);
+                            echo '
+
+                  <p>  ' . $tag . '  </p>
+
+                    ';
+                        ?>
+                    </div>
+
+                        
+                            </p>
+                            
                         </div>
 
                     </div>
@@ -44,5 +81,6 @@ $wikis = $controller->getallwiki();
             </div>
         </div>
     </div>
+    <?php endforeach ?>
 </body>
 </html>

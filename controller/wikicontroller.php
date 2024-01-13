@@ -70,7 +70,7 @@ class wikicontroller
 
                 $wiki = new Wiki();
                 $wiki->deletewiki($wikiID);
-                header("Location: wikisview.php?deletewiki&wikiID=$wikiID");
+                header("Location: wikisview.php");
                 exit();
             }
         }
@@ -80,7 +80,8 @@ class wikicontroller
     {
         if (isset($_GET['archivewiki']) && isset($_GET['wikiID'])) {
             $wikiID = $_GET['wikiID'];
-
+// var_dump($wikiID);
+// die("cc");
             $wiki = new Wiki();
             $wiki->archivedWiki($wikiID);
             header('Location: wikisadmin.php');
@@ -89,12 +90,16 @@ class wikicontroller
     }
 
 
-    // public function showWikisCount()
-    // {
-    //     $wikiModel = new Wiki();
-    //     $totalWikis = $wikiModel->countWikis();
+    public function detofwikis()
+    {
 
-    // }
+        if (isset($_GET['detailofwiki']) && isset($_GET['wikiID'])) {
+            $wikiID = $_GET['wikiID'];
+          
+            $wiki = new Wiki();
+            return $wiki->detofwiki($wikiID);
+        }
+    }
 }
 
 

@@ -17,7 +17,7 @@ $tag = new tagController();
 $tags = $tag->DisplayTags();
 
 
-
+$wikiDet = $controller->detofwikis();
 
 
 ?>
@@ -60,7 +60,7 @@ $tags = $tag->DisplayTags();
                 $wiW = $wtest['wiki'];
                 $wC = $wtest['category'];
                 $wU = $wtest['user'];
-                $wT = $wtest['tagList'];
+                $wT = $wtest['tagnames'];
 
 
 
@@ -72,14 +72,14 @@ $tags = $tag->DisplayTags();
                     <div class="-my-8 divide-y-2 divide-gray-100">
 
                         <div class="flex flex-wrap md:flex-nowrap">
-<!-- `      <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col"> ${element.conten}` -->
+                            <!-- `      <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col"> ${element.conten}` -->
                             <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                                 <span class="font-semibold title-font text-gray-700"><?php echo ($wC->getCategorie()); ?></span>
                                 <span class="mt-1 text-gray-500 text-sm"><?php echo ($wT->getTag()); ?></span>
                             </div>
                             <div class="md:flex-grow">
                                 <h2 class="text-2xl font-medium text-gray-500 title-font mb-2"><?php echo ($wiW->gettitle()); ?></h2>
-                                <p class="text-black "> <?php echo substr($wiW->getcontent(), 0, 350); ?>...<a href="#" class="text-blue-300">View more</a></p>
+                                <p class="text-black "> <?php echo substr($wiW->getcontent(), 0, 350); ?>...<a href="detailofwiki.php?detailofwiki&wikiID=<?php echo $wiW->getid(); ?>" class="text-blue-300">View more</a></p>
 
                             </div>
                             <span class="text-gray-500 cursor-pointer mr-4" title="Edit" onclick="openEditModal()">
@@ -88,20 +88,24 @@ $tags = $tag->DisplayTags();
                                     <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
                                 </svg>
                             </span>
-                            <a href="wikis.php?deletewiki&wikiID=">
-                                <span class="text-red-500 cursor-pointer" title="Delete">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </span>
-                            </a>
+                          
+            
+               <span class="text-red-500 cursor-pointer" title="Delete">
+                    <a title="delete" class="text-red-500 cursor-pointer" href="wikis.php?deletewiki&wikiID=<?php echo $wiW->getid(); ?>">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </a>
+                </span>
+   
 
 
                         </div>
-
+       
                     </div>
 
                 </div>
+           
             <?php endforeach ?>
         </div>
         <div class="search-results flex flex-wrap mx-auto md:px-12 flex-grow"></div>
@@ -180,74 +184,81 @@ $tags = $tag->DisplayTags();
         </div>
         <!-- //search -->
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.querySelector('#search');
-    const searchResultsContainer = document.querySelector('.search-results');
-    const originalCardsContainer = document.getElementById('wikisContent');
-    const newcontent = document.querySelector('.newcontents');
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.querySelector('#search');
+                const searchResultsContainer = document.querySelector('.search-results');
+                const originalCardsContainer = document.getElementById('wikisContent');
+                const newcontent = document.querySelector('.newcontents');
 
-    searchInput.addEventListener('input', function() {
-        const param = encodeURIComponent(searchInput.value.trim());
-        console.log(param);
+                searchInput.addEventListener('input', function() {
+                    const param = encodeURIComponent(searchInput.value.trim());
+                    console.log(param);
 
-        if (param === '') {
-            searchResultsContainer.innerHTML = '';
-        } else {
-            let xml = new XMLHttpRequest();
 
-            xml.onload = function() {
-                if (this.status == 200) {
-                    var response = JSON.parse(this.responseText);
-                    console.log(response);
 
-                    newcontent.innerHTML = ''; 
+                    let xml = new XMLHttpRequest();
 
-                    var output = '';
-                    response.forEach(element => {
-                        output += `
-                            <div class="container px-5 py-16 mx-auto bg-white rounded-lg shadow-lg overflow-hidden mb-6">
-                                <div class="flex flex-wrap md:flex-nowrap">
-                                    <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-                                        <span class="font-semibold title-font text-gray-700">${element.nomCategorie}</span>
-                                        <span class="mt-1 text-gray-500 text-sm">${element.tagnames}</span>
-                                    </div>
-                                    <div class="md:flex-grow">
-                                        <h2 class="text-2xl font-medium text-gray-500 title-font mb-2">${element.title}</h2>
-                                        <p class="text-black ">${element.content.substring(0, 350)}...<a href="#" class="text-blue-300">View more</a></p>
-                                    </div>
+                    xml.onload = function() {
+                        if (this.status == 200) {
+                            var response = JSON.parse(this.responseText);
+                            console.log(response);
+
+                            newcontent.innerHTML = '';
+
+                            var output = '';
+                            response.forEach(element => {
+                                output += `
+                                <div class="container px-5 py-16 mx-auto">
+
+                                <div class="-my-8 divide-y-2 divide-gray-100">
+
+                                    <div class="flex flex-wrap md:flex-nowrap">
+                                   
+                                        <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                                            <span class="font-semibold title-font text-gray-700">${element.nomCategorie}</span>
+                                            <span class="mt-1 text-gray-500 text-sm">${element.tagnames}</span>
+                                        </div>
+                                        <div class="md:flex-grow">
+                                            <h2 class="text-2xl font-medium text-gray-500 title-font mb-2">${element.title}</h2>
+                                            <p class="text-black "> ${element.content.substring(0, 350)}...<a href="#" class="text-blue-300">View more</a></p>
+
+                                        </div>
                                     <span class="text-gray-500 cursor-pointer mr-4" title="Edit" onclick="openEditModal()">
-                                        <!-- Your edit SVG icon goes here -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(59, 130, 246);">
+                             <path d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z"></path>
+                               <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
+                                 </svg>
                                     </span>
-                                    <a href="wikis.php?deletewiki&wikiID=${element.wikiID}">
+                                    <a href="wikisview.php?deletewiki&wikiID=${element.wikiID}">
                                         <span class="text-red-500 cursor-pointer" title="Delete">
-                                            <!-- Your delete SVG icon goes here -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
                                         </span>
                                     </a>
                                 </div>
                             </div>
+                            </div>
+
+
                         `;
-                    });
+                            });
+                         
+       
 
-                    newcontent.innerHTML = output;
-                }
-            };
+                            newcontent.innerHTML = output;
+                        }
+                    };
 
-            xml.open('POST', '../controller/wikicontroller.php');
-            xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xml.send('param=' + param);
-        }
-    });
-});
+                    xml.open('POST', '../controller/wikicontroller.php');
+                    xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xml.send('param=' + param);
+
+                });
+            });
 
 
-            // function displaySearchResultsAsJSON(data) {
-            //     const jsonContainer = document.createElement('pre');
-            //     jsonContainer.className = 'my-4 p-4 bg-gray-200 rounded-lg';
-            //     jsonContainer.textContent = JSON.stringify(data, null, 2);
-
-            //     searchResultsContainer.innerHTML = '';
-            //     searchResultsContainer.appendChild(jsonContainer);
-            // }
+           
         </script>
 
         <script>

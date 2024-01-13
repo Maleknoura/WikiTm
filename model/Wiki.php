@@ -115,6 +115,7 @@ class Wiki
         JOIN user ON wiki.iduser = user.iduser
         JOIN categorie c ON c.categorieID = wiki.categorieID
         ORDER BY wiki.creationDate DESC
+       
         LIMIT 2";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -154,15 +155,14 @@ class Wiki
 
     public function getallwiki()
     {
-        $query = "SELECT wiki.wikiID, wiki.title, wiki.content, wiki.creationDate, c.nomCategorie, user.prenom, user.nom, GROUP_CONCAT(tags.nomTag) as tagList
-        FROM wiki
-        JOIN user ON wiki.iduser = user.iduser
-        JOIN categorie c ON c.categorieID = wiki.categorieID
-        LEFT JOIN wikitag ON wikitag.wikiID = wiki.wikiID
-        LEFT JOIN tags ON wikitag.tagID = tags.tagID
-        WHERE isarchived IS NULL
-        GROUP BY wiki.wikiID, wiki.title, wiki.content, wiki.creationDate, c.nomCategorie, user.prenom, user.nom
-        ORDER BY wiki.creationDate DESC";
+        $query = "SELECT w.wikiID, w.title,w.content, w.creationDate,c.categorieID, c.nomCategorie, u.nom, u.prenom,t.tagID, GROUP_CONCAT(t.nomTag) as tagnames
+        FROM wiki w
+        LEFT JOIN categorie c ON w.categorieID = c.categorieID
+        LEFT JOIN user u ON w.iduser = u.iduser
+        LEFT JOIN wikitag wt ON w.wikiID = wt.wikiID
+    LEFT JOIN tags t on t.tagID = wt.tagID
+    WHERE isarchived IS NULL
+    GROUP BY w.wikiID ORDER BY w.creationDate DESC;";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $stmt = $this->conn->prepare($query);
@@ -187,14 +187,14 @@ class Wiki
             $user->setPrenom($w['prenom']);
 
             $ta = new tagModel();
-            $ta->setTag($w['tagList']);
+            $ta->setTag($w['tagnames']);
 
 
             $wikirows = [
                 'wiki' => $wiki,
                 'category' => $cat,
                 'user' => $user,
-                'tagList' => $ta,
+                'tagnames' => $ta,
             ];
 
             $wikis[] = $wikirows;
@@ -248,5 +248,51 @@ class Wiki
         $sql = "SELECT COUNT(*) AS totalWikis FROM wiki";
         $stmt = $this->conn->query($sql);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    public function detofwiki($wikiID)
+    {
+        $sql = "SELECT w.wikiID, w.title,w.content, w.creationDate, c.nomCategorie, u.nom, u.prenom, GROUP_CONCAT(t.nomTag) as tagnames
+    FROM wiki w
+    LEFT JOIN categorie c ON w.categorieID = c.categorieID
+    LEFT JOIN user u ON w.iduser = u.iduser
+    LEFT JOIN wikitag wt ON w.wikiID = wt.wikiID
+    LEFT JOIN tags t on t.tagID = wt.tagID
+    WHERE w.wikiID = :wikiID AND isarchived IS NULL";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':wikiID', $wikiID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $wikisData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $wikis = [];
+        foreach ($wikisData as $wi) {
+            $wiki = new Wiki();
+            $wiki->setwikiID($wi['wikiID']);
+            $wiki->settitle($wi['title']);
+            $wiki->setContent($wi['content']);
+            $wiki->setCreationDate($wi['creationDate']);
+            $cat = new CategorieModel();
+            $cat->setCategorie($wi['nomCategorie']);
+            $user = new UserModel();
+            $user->setNom($wi['nom']);
+            $user->setPrenom($wi['prenom']);
+            $tagNames = explode(',', $wi['tagnames']);
+            $tags = array_map('trim', $tagNames);
+            $tag = new tagModel();
+            $tag->setTag($tags);
+            $wikiData = [
+                'wiki' => $wiki,
+                'category' => $cat,
+                'user' => $user,
+                'tagnames' => $tag,
+            ];
+
+            $wikis[] = $wikiData;
+        }
+
+        return $wikis;
     }
 }
