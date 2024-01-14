@@ -155,7 +155,7 @@ class Wiki
 
     public function getallwiki()
     {
-        $query = "SELECT w.wikiID, w.title,w.content, w.creationDate,c.categorieID, c.nomCategorie, u.nom, u.prenom,t.tagID, GROUP_CONCAT(t.nomTag) as tagnames
+        $query = "SELECT w.wikiID, w.title,w.content, w.creationDate,w.iduser,c.categorieID, c.nomCategorie, u.nom, u.prenom,t.tagID, GROUP_CONCAT(t.nomTag) as tagnames
         FROM wiki w
         LEFT JOIN categorie c ON w.categorieID = c.categorieID
         LEFT JOIN user u ON w.iduser = u.iduser
@@ -165,8 +165,8 @@ class Wiki
     GROUP BY w.wikiID ORDER BY w.creationDate DESC;";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
+        // $stmt = $this->conn->prepare($query);
+        // $stmt->execute();
         $wik = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $wikis = [];
         foreach ($wik as $w) {
@@ -175,6 +175,7 @@ class Wiki
             $wiki->settitle($w['title']);
             $wiki->setCreationDate($w['creationDate']);
             $wiki->setcontent($w['content']);
+            $wiki->setUserId($w['iduser']);
 
 
             $cat = new CategorieModel();
@@ -183,6 +184,7 @@ class Wiki
 
 
             $user = new UserModel();
+            $user->setId($w['iduser']);
             $user->setNom($w['nom']);
             $user->setPrenom($w['prenom']);
 
@@ -297,14 +299,14 @@ class Wiki
         return $wikis;
     }
 
-   public function updateWikis($categorieID,$tagID)
+   public function updateWikis($wikiID,$categorieID)
 {
     try {
         $this->conn->beginTransaction();
 
         // Update wiki
         $stmt = $this->conn->prepare("UPDATE wiki SET title = :title, content = :content, categorieID = :categorieID WHERE wikiID = :wikiID");
-        $stmt->bindParam(':wikiID', $this->wikiID);
+        $stmt->bindParam(':wikiID', $wikiID);
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':content', $this->content);
         $stmt->bindParam(':categorieID', $categorieID);
@@ -312,18 +314,23 @@ class Wiki
 
         // Delete existing tags for the wiki
         $sqlDeleteTags = $this->conn->prepare("DELETE FROM wikitag WHERE wikiID = :wikiID");
-        $sqlDeleteTags->bindParam(':wikiID', $this->wikiID);
+        $sqlDeleteTags->bindParam(':wikiID', $wikiID);
         $sqlDeleteTags->execute();
 
         // Add new tags for the wiki
-        if (!empty($tagID)) {
-            foreach ($tagID as $tagID) {
-                $sqlInsertTags = $this->conn->prepare("INSERT INTO wikitag (wikiID, tagID) VALUES (:wikiID, :tagID)");
-                $sqlInsertTags->bindParam(':wikiID', $this->wikiID);
-                $sqlInsertTags->bindParam(':tagID', $tagID);
-                $sqlInsertTags->execute();
-            }
-        }
+     
+            
+         
+            //     var_dump($tag);
+            //     die('why');
+            //     $sqlInsertTags = $this->conn->prepare("INSERT INTO wikitag (wikiID, tagID) VALUES (:wikiID, :tagID)");
+              
+
+            //     $sqlInsertTags->bindParam(':wikiID', $wikiID);
+            //     $sqlInsertTags->bindParam(':tagID', $tag);
+            //     $sqlInsertTags->execute();
+            // }
+        
 
         $this->conn->commit();
     } catch (PDOException $e) {

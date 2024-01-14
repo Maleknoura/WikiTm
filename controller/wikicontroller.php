@@ -34,12 +34,12 @@ class wikicontroller
             $wiki = new Wiki();
 
             $categoryID = (int)$_POST['categorieID'];
-            // $iduser = $_SESSION['iduser'];
+            $iduser = $_SESSION['iduser'];
 
             $wiki->settitle($_POST['title']);
             $wiki->setcontent($_POST['content']);
             $wiki->setCategoryId($categoryID);
-            // $wiki->setUserId($iduser); 
+            $wiki->setUserId($iduser); 
 
             $wikiID = $wiki->addWiki();
             if ($wikiID !== false) {
@@ -101,26 +101,79 @@ class wikicontroller
             return $wiki->detofwiki($wikiID);
         }
     }
+    // public function updateWiki()
+    // {
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+    //         if (isset($_POST['newInput'])) {
+                
+    //             $wikiID = $_POST['newInput'];
+               
+              
+    //             if (!$this->Wiki) {
+    //                 $this->Wiki = new Wiki();
+    //             }
+    
+               
+    //             $this->Wiki->setwikiId($wikiID);
+    //             $this->Wiki->settitle($_POST['title']);
+    //             $this->Wiki->setCategoryId($_POST['categorieID']);
+    //             $tagID=$_POST['selectedTagIds'];
+    //             $this->Wiki->setcontent($_POST['content']);
+    
+    //             if ($this->Wiki->updateWikis($tagID)) {
+    //                 header('location: wikisview.php');
+    //                 exit();
+    //             }else{
+    //                 die('noura');
+    //             }
+    //         }else {
+    //             var_dump($wikiID);
+    //           die('gbhjklm');
+    //         }
+    //     }
+    // }
+
+
     public function updateWiki()
-    {
-        if (isset($_POST['update'])) {
-            $wikiID = $_POST['wikiID'];
+{
+    $wikiID = null; // Déclaration préalable de $wikiID
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+        if (isset($_POST['aaaaaaaaaaaa'])) {
+            $wikiID = $_POST['aaaaaaaaaaaa'];
+            $categorieID = $_POST['categorieID'];
 
 
+                $Wiki = new Wiki();
+            
 
-            $this->Wiki->setwikiId($wikiID);
+            $Wiki->setwikiId($wikiID);
+            $Wiki->settitle($_POST['title']);
+            $Wiki->setCategoryId($_POST['categorieID']);
+            $tagsID = json_decode($_POST['selectedTagIds'],true);
+            var_dump($tagsID);
+            $Wiki->setcontent($_POST['content']);
+          $Wiki->updateWikis($wikiID,$categorieID);
 
-            $this->Wiki->settitle($_POST['title']);
-            $this->Wiki->setCategoryId($_POST['categorieID']);
-            $this->Wiki->setTag($_POST['selectedTagIds']);
-            $this->Wiki->setcontent($_POST['content']);
+          foreach($tagsID as $tagID){
+           $res = $Wiki->addWikiTag($wikiID,$tagID);
+          }
+          
+            if ($res) {
 
-            if ($this->Wiki->updateWikis()) {
                 header('location: wikisview.php');
                 exit();
+            } else {
+                die('noura');
             }
+        } else {
+            var_dump($wikiID);
+            die('gbhjklm');
         }
     }
+}
+
+    
 }
 
 

@@ -60,7 +60,7 @@
 				<input type="email" placeholder="Email"name="email"  />
 				<input type="password" placeholder="Password" name="pass" />
 			
-				<button type="submit"name="submit">Sign In</button>
+				<button type="submit"name="submit_login">Sign In</button>
 			</form>
 		</div>
 		<div class="overlay-container">

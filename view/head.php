@@ -25,7 +25,7 @@
         </div>
         <div class=" flex ">
 
-            <a href="dashboardview.php?deconn">
+            <a href="loginview.php?deconn">
         <i class='bx bx-user-circle text-3xl'></i>
         </a>
         </div>

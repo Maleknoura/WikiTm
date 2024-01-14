@@ -10,8 +10,8 @@ $statistics = $controller->statiwikis();
 $controllerU = new usercontroller();
 $staU = $controllerU ->statuser();
 $controllerU->isLoggedIn('admin');
-$controllerU->login();
-$controllerU->logout();
+//$controllerU->login();
+//$controllerU->logout();
 
 $controllerT = new tagModel();
 $staT = $controllerT->getTagStatistics();

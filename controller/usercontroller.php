@@ -41,11 +41,12 @@ class usercontroller
                 $_SESSION['iduser'] = $authenticatedUser['iduser'];
                 $_SESSION['nom'] = $authenticatedUser['nom'];
                 $_SESSION['role'] = $authenticatedUser['role'];
+                
 
                 if ($_SESSION['role'] === 'admin') {
-                    header('Location: ../view/index.php');
+                    header('Location: ../view/dashboardview.php');
                     exit();
-                } elseif ($_SESSION['role'] === 'auteur') {
+                } elseif ($_SESSION['role'] === ':auteur') {
                     header('Location: ../view/index.php');
                     exit();
                 }
