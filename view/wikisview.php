@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 require_once "../controller/wikicontroller.php";
 require_once "../controller/CategorieController.php";
 require_once "../controller/TagController.php";
@@ -7,8 +7,14 @@ require_once "../controller/usercontroller.php";
 
 
 $controller = new wikicontroller();
-
+$cont = new usercontroller();
+$cont->logout();
 $recentwiki = $controller->getallwiki();
+// if (isset($_SESSION['role'])) {
+//     $controller->addWikis();
+// } else {
+//     header('location.loginview.php');
+// }
 $controller->addWikis();
 $controller->updateWiki();
 $controller->deletewiki();
@@ -24,8 +30,8 @@ $wikiDet = $controller->detofwikis();
 
 
 
-	$user = new usercontroller();
-	$m = $user->login();
+$user = new usercontroller();
+$m = $user->login();
 ?>
 
 
@@ -44,8 +50,8 @@ $wikiDet = $controller->detofwikis();
 <body>
 
     <?php include "head.php";
-    
-    
+
+
     ?>
 
 
@@ -57,7 +63,7 @@ $wikiDet = $controller->detofwikis();
             <div>
                 <input type="text" id="search" name="search" placeholder="Search..." class="p-2  mt-5  border border-gray-300 rounded-md">
                 <button id="searchButton" class="ml-2  py-2 bg-gray-300 text-white rounded-md hover:bg-blue-400 transition duration-300">Search</button>
-
+<!-- <?php echo $_SESSION['iduser'] ?>; -->
             </div>
         </div>
         <div class="newcontents">
@@ -98,31 +104,31 @@ $wikiDet = $controller->detofwikis();
                                     <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
                                 </svg>
                             </span> -->
-                            <?php 
+                            <?php
                             if (isset($_SESSION['iduser'])) {
                                 // var_dump($_SESSION['iduser']);
-                                
-                                
-                            if ($wiW->getidUser() == $_SESSION['iduser']) { ?>
-                                
-                            
-                            <span class="text-gray-500 cursor-pointer mr-4" title="Edit" name="update" onclick="openEditModal(<?php echo $wiW->getid() ?>)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(59, 130, 246);">
-                                    <path d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z"></path>
-                                    <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
-                                </svg>
-                            </span>
+
+
+                                if ($wiW->getidUser() == $_SESSION['iduser']) { ?>
+
+
+                                    <span class="text-gray-500 cursor-pointer mr-4" title="Edit" name="update" onclick="openEditModal(<?php echo $wiW->getid() ?>)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(59, 130, 246);">
+                                            <path d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z"></path>
+                                            <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
+                                        </svg>
+                                    </span>
 
 
 
-                            <!-- <span class="text-red-500 cursor-pointer"  title="Delete"> -->
-                            <a title="delete" class="text-red-500 cursor-pointer" href="wikisview.php?deletewiki&wikiID=<?php echo $wiW->getid(); ?>">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </a>
+                                    <!-- <span class="text-red-500 cursor-pointer"  title="Delete"> -->
+                                    <a title="delete" class="text-red-500 cursor-pointer" href="wikisview.php?deletewiki&wikiID=<?php echo $wiW->getid(); ?>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </a>
                             <?php
-                             }
+                                }
                             }
                             ?>
                             <!-- </span> -->

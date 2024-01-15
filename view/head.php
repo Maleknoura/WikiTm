@@ -25,8 +25,9 @@
         </div>
         <div class=" flex ">
 
-            <a href="loginview.php?deconn">
-        <i class='bx bx-user-circle text-3xl'></i>
+        <form method="post">            
+            <button name="logout" type="submit"><i class='bx bx-user-circle text-3xl'></i></button>
+        </form>
         </a>
         </div>
         </div>

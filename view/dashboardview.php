@@ -81,7 +81,7 @@ $staC = $controllerC->stacategorie() ;
 
                                     <div class="mx-5">
                                         <!-- Update this part -->
-                                        <h4 class="text-xl font-semibold text-gray-700">    s</h4>
+                                        <h4 class="text-xl font-semibold text-gray-700">Users</h4>
                                         <div class="text-gray-500"><?php echo $staU['totalUsers']; ?></div>
                                     </div>
                                 </div>

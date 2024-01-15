@@ -26,7 +26,7 @@
 
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
-		<form action="" method="post" >
+		<form action="" method="post" id="signupForm" >
 								<?php if (!empty($err)) : ?>
 								
 										<?php echo $err; ?>
@@ -37,10 +37,13 @@
 				
 				<span>or use your email for registration</span>
 				<input type="text" name="nom" placeholder="Name" />
-				<input type="text" name="prenom" placeholder="lastName" />
-				<input type="email" name="email" placeholder="Email" />
-				<input type="password" name="pass" placeholder="Password" />
 			
+				<input type="text" name="prenom" placeholder="lastName" />
+				<small></small>
+				<input type="email" name="email" placeholder="Email" />
+				<small></small>
+				<input type="password" name="pass" placeholder="Password" />
+				<small></small>			
 				<button type="submit"name="submit" >Sign Up</button>
 			</form>
 		</div>

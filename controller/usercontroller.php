@@ -56,11 +56,15 @@ class usercontroller
         }
     }
     public function logout(){
-        session_destroy();
-        header("Location: ../view/loginview.php");
-        exit();
+        if(isset($_POST['logout'])){
+            session_destroy();
+            header("Location: ../view/loginview.php");
+            exit();
+        }
+       
         }
     
+        
 
         public function isLoggedIn($requiredRole = null)
         {

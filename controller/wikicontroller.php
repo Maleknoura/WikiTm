@@ -31,6 +31,7 @@ class wikicontroller
     public function addWikis()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addwiki'])) {
+            if(isset($_SESSION['role'] )){
             $wiki = new Wiki();
 
             $categoryID = (int)$_POST['categorieID'];
@@ -56,6 +57,11 @@ class wikicontroller
             } else {
                 echo "Failed to add a new wiki.";
             }
+        }
+    
+else{
+    header('location:loginview.php');
+}
         }
     }
 
