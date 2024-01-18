@@ -87,7 +87,7 @@ class Wiki
         return $stmt->execute();
     }
 
-    // Add wikis
+ 
     public function addWiki()
     {
         $sql = "INSERT INTO wiki (title, content, iduser, categorieID) VALUES (:title, :content, :iduser, :categorieID)";
@@ -151,7 +151,7 @@ class Wiki
     }
 
 
-    //afficher tout les wikis//      
+    
 
     public function getallwiki()
     {

@@ -25,28 +25,27 @@
 	<body>
 
 	<div class="container" id="container">
-		<div class="form-container sign-up-container">
-		<form action="" method="post" id="signupForm" >
-								<?php if (!empty($err)) : ?>
-								
-										<?php echo $err; ?>
-								
-								<?php endif; ?>
-		
-				<h1>Create Account</h1>
-				
-				<span>or use your email for registration</span>
-				<input type="text" name="nom" placeholder="Name" />
-			
-				<input type="text" name="prenom" placeholder="lastName" />
-				<small></small>
-				<input type="email" name="email" placeholder="Email" />
-				<small></small>
-				<input type="password" name="pass" placeholder="Password" />
-				<small></small>			
-				<button type="submit"name="submit" >Sign Up</button>
-			</form>
-		</div>
+	<div class="form-container sign-up-container">
+    <form action="" method="post" id="signupForm">
+        <?php if (!empty($err)) : ?>
+            <?php echo $err; ?>
+        <?php endif; ?>
+
+        <h1>Create Account</h1>
+
+        <span>or use your email for registration</span>
+        <input type="text" name="prenom" id="validateFirstNameInput" placeholder="First Name" />
+        <small></small>
+        <input type="text" name="nom" id="validateLastNameInput" placeholder="Last Name" />
+        <small></small>
+        <input type="email" name="email" id="validateEmailInput" placeholder="Email" />
+        <small></small>
+        <input type="password" name="pass" id="validatePasswordInput" placeholder="Password" />
+        <small></small>
+        <button type="submit" name="submit">Sign Up</button>
+    </form>
+</div>
+
 		<div class="form-container sign-in-container">
 	
 								

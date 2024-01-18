@@ -306,26 +306,24 @@ $m = $user->login();
 
 
         <script>
-            // function openEditModal(wikiId) {
-            //     document.getElementById('editModal').classList.remove('hidden');   
-            // }
+           
             function openEditModal(wikiId) {
 
-                var editForm = document.getElementById('updatForm'); // Remplacez 'editForm' par l'ID réel de votre formulaire
+     
+                var editForm = document.getElementById('updatForm'); 
 
-                // Créer un nouvel élément input
+              
                 var newInput = document.createElement('input');
 
-                // Définir les attributs du nouvel input
-                newInput.type = 'hidden'; // ou 'hidden' selon vos besoins
-                newInput.name = 'aaaaaaaaaaaa'; // Nom du champ d'entrée
-                newInput.value = wikiId; // Assigner la valeur wikiId
+                newInput.type = 'hidden'; 
+                newInput.name = 'aaaaaaaaaaaa'; 
+                newInput.value = wikiId;
 
-                // Ajouter le nouvel input au formulaire
+               
                 editForm.appendChild(newInput);
 
-                // Afficher le modal
                 document.getElementById('editModal').classList.remove('hidden');
+
 
             }
 
